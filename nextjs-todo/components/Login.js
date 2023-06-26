@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -6,13 +7,26 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  function submitHandler() {
+  const { login, signUp, currentUser } = useAuth();
+  console.log(currentUser);
+
+  async function submitHandler() {
     if (!email || !password) {
       setError("Please enter email and password");
       return;
     } else {
       setError(false);
     }
+
+    if (isLoggingIn) {
+      try {
+        await login(email, password);
+      } catch (error) {
+        setError("incorrect email or password");
+      }
+      return;
+    }
+    await signUp(email, password);
   }
 
   return (
