@@ -16,14 +16,12 @@ export default function useFetchTodos() {
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+          //   console.log(`docSnap.data():`, docSnap.data());
           setTodos(docSnap.data().todos);
-          // setTodos('todos' in docSnap.data() ? docSnap.data().todos : {})
-        } else {
-          setTodos({});
         }
       } catch (err) {
         setError("Failed to load todos");
-        console.log(err);
+        // console.log(err);
       } finally {
         setLoading(false);
       }
